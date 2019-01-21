@@ -1,0 +1,62 @@
+<script>
+const img = document.querySelector(".img-sm");
+const imgMagni = document.querySelector(".img-magni");
+const divMagni = document.querySelector(".div-magni");
+
+
+const imgTop = img.getBoundingClientRect().top;
+const imgLeft = img.getBoundingClientRect().left;
+const imgWidth = img.getBoundingClientRect().width;
+const imgHeight = img.getBoundingClientRect().height;
+
+const imgMagniTop = imgMagni.getBoundingClientRect().top;
+const imgMagniLeft = imgMagni.getBoundingClientRect().left;
+const imgMagniWidth = imgMagni.getBoundingClientRect().width;
+const imgMagniHeight = imgMagni.getBoundingClientRect().height;
+
+const divMagniTop = divMagni.getBoundingClientRect().top;
+const divMagniLeft = divMagni.getBoundingClientRect().left;
+const divMagniWidth = divMagni.getBoundingClientRect().width;
+const divMagniHeight = divMagni.getBoundingClientRect().height;
+
+const msgX = document.querySelector(".msgX");
+const msgY = document.querySelector(".msgY");
+
+img.addEventListener("mousemove", e => {
+ 
+  let percentX = Math.floor(((e.clientX - imgLeft)/imgWidth)*100);
+  let percentY = Math.floor(((e.clientY - imgTop)/imgHeight)*100);
+  
+  imgMagni.style.left = (-percentX/100)*imgMagniWidth + divMagniWidth/2 + "px";;
+  imgMagni.style.top = (-percentY/100)*imgMagniHeight + divMagniHeight/2 + "px";
+
+});
+</script>
+<style>
+.img-sm {
+  width: 300px;
+  cursor: crosshair;
+}
+
+.div-magni {
+  position: absolute;
+  top: 20px;
+  left: 400px;
+  width: 300px;
+  overflow: hidden;
+  height: 200px;
+  border: 1px solid grey;
+}
+
+.img-magni {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  transition: all 0.25s ease-out;
+}
+</style>
+<img src="https://i.imgur.com/S39ZbkL.jpg" class="img-sm">
+
+<div class="div-magni">
+    <img src="https://i.imgur.com/S39ZbkL.jpg" class="img-magni">
+</div>
