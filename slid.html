@@ -1,0 +1,435 @@
+<html>
+   <head>
+      <meta charset="UTF-8">
+      <meta content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover" id="viewport" name="viewport">
+      <meta content="IE=edge" http-equiv="X-UA-Compatible">
+      <meta content="noimageindex, noarchive" name="robots">
+      <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro|Noto+sans|Nanum+Gothic" rel="stylesheet">
+      <meta content="yes" name="mobile-web-app-capable">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      <style>
+         body {
+         font-family: "Noto sans", -apple-system, BlinkMacSystemFont, 'Segoe UI', Ubuntu, 'Open Sans', 'Helvetica Neue', sans-serif;
+         font-weight: 400;
+         line-height: 1.6;
+         background-color: lemonchiffon;
+         /*background: #f1f1f4;*/
+         }
+         * {
+         margin: 0;
+         padding: 0;
+         outline: none;
+         box-sizing: border-box;
+         text-decoration: none;
+         vertical-align: baseline;
+         list-style-type: none;
+         border: 0;
+         outline: 0;
+         }
+      </style>
+      <style>
+         .slider {
+         position: relative;
+         max-width: 700px;
+         width: 100%;
+         height: 300px;
+         background: whitesmoke;
+         padding: 0 50px;
+         }
+         .slider__items {
+         position: relative;
+         width: 100%;
+         margin: 0;
+         list-style: none;
+         height: 300px;
+         padding: 0;
+         }
+         .slider__item {
+         position: absolute;
+         top: 0;
+         display: flex;
+         left: 0;
+         width: 100%;
+         justify-content: center;
+         opacity: 0;
+         transition: opacity 0.4s ease;
+         }
+         .slider__item img {
+         display: block;
+         height: 300px;
+         }
+         .slider__item--active {
+         position: relative;
+         opacity: 1;
+         }
+         .slider__nav {
+         padding: 0;
+         background: #00000054;
+         border: none;
+         border-radius: 0;
+         position: absolute;
+         top: 50%;
+         transform: translateY(-50%);
+         z-index: 1;
+         background: none;
+         }
+         .slider__nav span {
+         display: block;
+         background: #00000054;
+         transition: transform 0.2s ease;
+         }
+         .slider__nav:hover {
+         cursor: pointer;
+         }
+         .slider__nav:focus {
+         outline: none;
+         }
+         .slider__nav--prev {
+         left: 0;
+         }
+         .slider__nav--next {
+         right: 0;
+         }
+      </style>
+   </head>
+   <body>
+      <div id="header">
+         <div class="gnb_top">
+            <h1>
+               <a class="btn_v" href="/home" onclick="ga('send', 'event', 'main', 'click_home');">
+               <span class="logo_v">V LIVE, the Live Broadcasting App</span>
+               </a>
+            </h1>
+            <div class="navigation">
+               <ul>
+                  <li><a href="/home" class="" onclick="ga('send', 'event', 'main', 'click_home');"><span class="menu1">HOME</span></a></li>
+                  <li><a href="/news" class="on" onclick="ga('send', 'event', 'main', 'click_upcoming');"><span class="menu2">NEWS</span></a></li>
+                  <li><a href="/channels" class="" onclick="nclk(this,'gnb.channel','','',event);"><span class="menu3">CHANNELS</span></a></li>
+                  <li><a href="/events" class="" onclick="nclk(this,'gnb.events','','',event);"><span class="menu4">EVENTS</span></a></li>
+                  <li><a href="/vstore" class="" onclick="ga('send', 'event', 'premium', 'visit_store');"><span class="menu5">STORE</span></a></li>
+                  <li><a href="https://vtoday.vlive.tv"><span class="menu6">TODAY</span></a></li>
+               </ul>
+            </div>
+            <div class="gnb_info">
+               <input type="submit" id="btn_search1" class="btn_search" title="search">
+               <div class="login_area">
+                  <a href="#" class="btn_login">Login</a>
+               </div>
+               <div class="lang_area">
+                  <strong class="blind">Choose language</strong>
+                  <a href="#" class="btn_lang">English<span class="icon_arr"></span></a>
+                  <div class="lyr" style="display:none">
+                     <a href="#" class="on" onclick="nclk(this,'gnb.langen','','',event);vlive.tv.common.changeLanguage('en');return false;">English</a>
+                     <a href="#" onclick="nclk(this,'gnb.langkr','','',event);vlive.tv.common.changeLanguage('ko');return false;">한국어</a>
+                     <a href="#" onclick="nclk(this,'gnb.langzhHans','','',event);vlive.tv.common.changeLanguage('zh_cn');return false;">中文(简体)</a>
+                     <a href="#" onclick="vlive.tv.common.changeLanguage('zh_tw');return false;">中文(繁體)</a>
+                     <a href="#" onclick="nclk(this,'gnb.langvi','','',event);vlive.tv.common.changeLanguage('vi');return false;">Tiếng
+                     Việt</a>
+                     <a href="#" onclick="vlive.tv.common.changeLanguage('th');return false;">ภาษาไทย</a>
+                     <a href="#" onclick="vlive.tv.common.changeLanguage('id');return false;">Bahasa Indonesia</a>
+                     <a href="#" onclick="vlive.tv.common.changeLanguage('es');return false;">Español</a>
+                     <a href="#" onclick="vlive.tv.common.changeLanguage('ja');return false;">日本語</a>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <style>
+         #header {
+         position: relative;
+         z-index: 3000;
+         border-bottom: 1px solid #ffec42;
+         }
+         .gnb_top {
+         zoom: 1;
+         position: relative;
+         width: 1218px;
+         margin: 0 auto;
+         height: 70px;
+         *z-index: 20;
+         font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", Arial, NanumGothic, 나눔고딕, sans-serif;
+         }
+         .gnb_top h1 {
+         float: left;
+         margin: 19px 50px 0 0;
+         }
+         .gnb_top .btn_v {
+         background-position: -74px -127px;
+         background-repeat: no-repeat;
+         width: 98px;
+         height: 33px;
+         overflow: hidden;
+         }
+         .social_link .btn_weibo,
+         .social_link .btn_facebook,
+         .social_link .btn_twitter,
+         .logo_top_header .vlive_logo,
+         .gnb_top .btn_v,
+         .gnb_info .btn_search,
+         .gnb_info .search_word .icon_fanship,
+         .gnb_info .icon_arr,
+         #header.header_series_home .gnb_info .btn_search,
+         #header.header_tag .gnb_info .btn_search,
+         #header.header_series_home .gnb_info .icon_arr,
+         #header.header_tag .gnb_info .icon_arr,
+         .vlogin_lyr .lyr_tit .tit_img,
+         .vlogin_lyr .btn_close,
+         .username_ico:before,
+         .nickname_ico:before,
+         .birthday_ico:before,
+         .gender_ico:before,
+         .email_ico:before,
+         .mobile_ico:before,
+         .essential_ico,
+         .notice_ico,
+         .notice_bubble_wrap .notice_bubble:after,
+         .notice_wrap .txt.confirm:before,
+         .check_area .check_bg,
+         .lyr_share .embed_select .txt_select:after,
+         .verror .error_img3,
+         .verror .error_img4,
+         .fanship_goods_apply .notice_wrap .icon_notice,
+         .fanship_goods_confirm .notice_wrap .icon_notice,
+         .search_top .btn_search,
+         .vote_type_video .video_link:before {
+         display: inline-block;
+         vertical-align: top;
+         background-image: url(https://ssl.pstatic.net/static/m/vlive/pc/2019/05/20/sp_common.png);
+         background-repeat: no-repeat;
+         }
+         a,
+         a:hover,
+         a:active,
+         a:focus {
+         text-decoration: none;
+         cursor: pointer;
+         }
+         .gnb_top .btn_v span {
+         font-size: 0;
+         line-height: 0;
+         vertical-align: top;
+         color: rgba(0, 0, 0, 0);
+         }
+         .gnb_top .navigation {
+         float: left;
+         margin-top: 17px;
+         }
+         .gnb_top .navigation ul {
+         zoom: 1;
+         }
+         ul,
+         ol {
+         list-style: none;
+         }
+         .gnb_top .navigation li:first-child {
+         padding-left: 0;
+         }
+         .gnb_top .navigation li {
+         float: left;
+         padding-left: 25px;
+         }
+         .gnb_top .navigation a {
+         display: inline-block;
+         height: 19px;
+         padding: 8px 0;
+         vertical-align: top;
+         font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", Arial, NanumGothic, 나눔고딕, sans-serif;
+         }
+         .gnb_top .navigation a {
+         display: inline-block;
+         height: 19px;
+         padding: 8px 0;
+         vertical-align: top;
+         font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", Arial, NanumGothic, 나눔고딕, sans-serif;
+         }
+         .gnb_top .navigation a.on span {
+         border-bottom: 3px solid #46465a;
+         }
+         .gnb_top .navigation a span {
+         display: block;
+         height: 26px;
+         background: 0;
+         font-size: 16px;
+         font-weight: 700;
+         line-height: 20px;
+         color: #46465a;
+         }
+         .gnb_info {
+         position: absolute;
+         top: 18px;
+         right: 0;
+         }
+         .gnb_info .btn_search {
+         float: left;
+         margin: 5px 28px 0 0;
+         border: 0;
+         background-color: transparent;
+         cursor: pointer;
+         font-size: 0;
+         line-height: 0;
+         vertical-align: top;
+         color: rgba(0, 0, 0, 0);
+         background-position: -84px -201px;
+         background-repeat: no-repeat;
+         width: 22px;
+         height: 22px;
+         }
+         .blind {
+         position: absolute;
+         top: 0;
+         left: 0;
+         width: 1px;
+         height: 1px;
+         margin: -1px;
+         overflow: hidden;
+         clip: rect(0 0 0 0);
+         }
+         .login_area {
+         float: left;
+         position: relative;
+         z-index: 10;
+         max-width: 250px;
+         }
+         .login_area .btn_login {
+         display: block;
+         min-width: 38px;
+         height: 30px;
+         padding: 0 13px;
+         margin: 0 -12px;
+         font-size: 14px;
+         line-height: 30px;
+         text-align: center;
+         color: #46465a;
+         }
+         .gnb_info .lang_area {
+         float: left;
+         position: relative;
+         z-index: 10;
+         margin-left: 21px;
+         }
+         .gnb_info .lang_area .btn_lang {
+         display: inline-block;
+         *display: inline;
+         *zoom: 1;
+         height: 30px;
+         font-size: 14px;
+         line-height: 30px;
+         font-weight: 500;
+         color: #46465a;
+         }
+         .gnb_info .icon_arr {
+         margin: 14px 0 2px 5px;
+         background-position: -284px -219px;
+         background-repeat: no-repeat;
+         width: 8px;
+         height: 5px;
+         }
+         .logoogle {
+         stroke: #fff;
+         height: 2.2rem;
+         width: 2.2rem;
+         }
+         .clrful {
+         stroke-width: 2;
+         fill: none;
+         box-shadow: none;
+         display: block;
+         padding: 3px;
+         stroke-linecap: round;
+         stroke-linejoin: round;
+         transition: .2s ease;
+         }
+      </style>
+      <div class="flexy pad10">
+         <div class="kiwi">
+            <div class="slider">
+               <ul class="slider__items" id="app">
+                  <li class="slider__item slider__item--active">
+                     <img src="https://source.unsplash.com/random/640x480" alt="Unsplash random image" />
+                  </li>
+               </ul>
+               <button class="slider__nav slider__nav--prev">
+                  <span>
+                     <svg class="logoogle clrful" viewBox="0 0 24 24" aria-hidden="true" aria-label="" role="img" stroke="#000000">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 8 8 12 12 16"></polyline>
+                        <line x1="16" y1="12" x2="8" y2="12"></line>
+                     </svg>
+                  </span>
+               </button>
+               <button class="slider__nav slider__nav--next">
+                  <span>
+                     <svg class="logoogle clrful" viewBox="0 0 24 24" aria-hidden="true" aria-label="" role="img" stroke="#000000">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 16 16 12 12 8"></polyline>
+                        <line x1="8" y1="12" x2="16" y2="12"></line>
+                     </svg>
+                  </span>
+               </button>
+            </div>
+            <script>
+               fetch('https://api.reddit.com/r/kpics/new/?sort=new&t=all')
+                   .then(res => res.json())
+                   .then(res => res.data.children)
+                   .then(res => res.map(post => ({
+                       link: post.data.url,
+                       img: post.data.thumbnail,
+                       title: post.data.title
+                   })))
+                   .then(res => res.map(render))
+                   .then(res => console.log(res))
+               const app = document.querySelector('#app');
+               const render = post => {
+                   const node = document.createElement('li');
+                   node.setAttribute("class", "slider__item")
+                   node.innerHTML = `
+               <a href="${post.link}" class="raditae">
+               <img src="${post.img}" class="raditimg" />
+               <span class="raditspan">${post.title}</span>
+               </a>`;
+                   app.appendChild(node);
+               }
+               
+            </script>
+         </div>
+      </div>
+      <script>
+         const sliderItemsWrapper = document.querySelector('.slider__items');
+         const prev = document.querySelector('.slider__nav--prev');
+         const next = document.querySelector('.slider__nav--next');
+         let currentSlideItem = document.querySelector('.slider__item--active');
+         
+         const changeSlide = function(forwards = true) {
+             let nextSlideItem = forwards ?
+                 currentSlideItem.nextElementSibling :
+                 currentSlideItem.previousElementSibling;
+         
+             if (!nextSlideItem) {
+                 nextSlideItem = forwards ?
+                     sliderItemsWrapper.firstElementChild :
+                     sliderItemsWrapper.lastElementChild;
+             }
+         
+             currentSlideItem.classList.remove('slider__item--active');
+             nextSlideItem.classList.add('slider__item--active');
+         
+             currentSlideItem = nextSlideItem;
+         };
+         
+         next.addEventListener('click', changeSlide);
+         prev.addEventListener('click', changeSlide.bind(null, false));
+         
+      </script>
+      <style>
+         .kiwi {
+         width: 100%;
+         box-sizing: border-box;
+         display: flex;
+         justify-content: center;
+         }
+         .flexy {
+         display: flex;
+         }
+      </style>
+   </body>
+</html>
